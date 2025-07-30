@@ -70,7 +70,7 @@ def chat():
         response = chain.predict(input=message)
         
         return jsonify({
-            'response': response,
+            'reply': response,
             'timestamp': str(datetime.now())
         })
         
