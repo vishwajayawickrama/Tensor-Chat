@@ -1,0 +1,6 @@
+Flask
+Flask-CORS
+langchain
+langchain-groq
+langchain-community
+python-dotenv
