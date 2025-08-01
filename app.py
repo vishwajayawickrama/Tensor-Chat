@@ -49,7 +49,7 @@ def create_chain_for_session():
         llm=llm,
         memory=memory,
         prompt=prompt,
-        verbose=False
+        verbose=True
     )
     
     return chain
