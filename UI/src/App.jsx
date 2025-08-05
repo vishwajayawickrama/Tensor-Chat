@@ -22,6 +22,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: inputMessage }),
+        credentials: 'include'
       });
 
       const data = await response.json();

@@ -1,73 +1,38 @@
+from session_chain import Session_Chain
 from flask import Flask, request, jsonify, Response, session
 from flask_cors import CORS
-from langchain_groq import ChatGroq
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.schema import HumanMessage, AIMessage
-from langchain.callbacks.base import BaseCallbackHandler
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.chains import ConversationChain
-import os
 import json
 import uuid
 from dotenv import load_dotenv
 from threading import Lock
 import datetime
+import uuid
 
-load_dotenv()
+
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("GROQ_API_KEY")
-CORS(app)
+CORS(app, supports_credentials=True)
+app.secret_key = 'your_secret_key_here'
 
-
-def create_chain_for_session():
-    llm = ChatGroq(
-        groq_api_key=os.getenv("GROQ_API_KEY"),
-        model_name="llama-3.3-70b-versatile",
-        temperature=0.7,
-        max_tokens=1000,
-        streaming=False
-    )
-    
-    # Setup memory with window to keep recent conversation
-    memory = ConversationBufferWindowMemory(
-        k=10,  # Keep last 10 exchanges
-        memory_key="chat_history",
-        return_messages=True
-    )
-    
-    # Create prompt template
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a helpful AI assistant. Provide clear, concise, and engaging responses. 
-        Be conversational but informative. If you're unsure about something, acknowledge it."""),
-        MessagesPlaceholder(variable_name="chat_history"),
-        ("human", "{input}")
-    ])
-    
-    # Create conversation chain
-    chain = ConversationChain(
-        llm=llm,
-        memory=memory,
-        prompt=prompt,
-        verbose=True
-    )
-    
-    return chain
-
-chain = create_chain_for_session()
+session_chains = {}
 
 @app.route('/chat', methods=['POST'])
 def chat():
     """Regular chat endpoint - returns complete response"""
     try:
+        if not session.get('session_id'):
+            session_id = str(uuid.uuid4())
+            session['session_id'] = session_id
+            session_chains[session_id] = Session_Chain(session_id)
+
+        session_id = session.get('session_id')
         data = request.get_json()
         message = data.get('message', '').strip()
         
         if not message:
             return jsonify({'error': 'Empty message'}), 400
         
-        # Get response from LangChain
-        response = chain.predict(input=message)
+        response = session_chains[session_id].chain.predict(input=message)
         
         return jsonify({
             'reply': response,
