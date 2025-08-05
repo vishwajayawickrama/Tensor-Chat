@@ -11,9 +11,11 @@
 - 🧠 Maintains memory of last 10 messages (LangChain buffer)
 - 🎨 Modern responsive chat UI (React + Tailwind CSS)
 
-> ⚡ This is **Version 1 (v1)** – a Minimum Viable Product (MVP) for the core chat system. Future versions will introduce:
+> **Version 1 (v1)** – a Minimum Viable Product (MVP) for the core chat system. Future versions will introduce:
 > - Streaming responses
 > - Persistent chat history
+
+> **Version 2 (v2)** (Active)
 > - Multi-user session support
 > - Avatar icons and typing indicators
 
