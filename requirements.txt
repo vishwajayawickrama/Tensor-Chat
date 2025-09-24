@@ -38,6 +38,10 @@ transformers==4.56.2              # HuggingFace transformers
 tokenizers==0.22.1                # Fast tokenizers for transformers
 huggingface-hub==0.35.1           # HuggingFace model hub client
 safetensors==0.6.2                # Safe tensor serialization format
+docarray                          # Document array for embeddings
+pdfminer.six==20221105            # PDF parsing library
+PyPDF2                            # Alternative PDF processing library
+pypdf                             # Modern PDF library (PyPDF2 successor)
 
 # ------------------------------------------------------------------------------
 # AI/ML - DEEP LEARNING FRAMEWORK
