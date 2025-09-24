@@ -1,6 +1,302 @@
-Flask
-Flask-CORS
-langchain
-langchain-groq
-langchain-community
-python-dotenv
+# ==============================================================================
+# TENSOR-CHAT PROJECT DEPENDENCIES
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# CORE FLASK WEB APPLICATION
+# ------------------------------------------------------------------------------
+Flask==3.1.2                      # Main web framework
+flask-cors==6.0.1                 # Cross-origin resource sharing support
+Werkzeug==3.1.3                   # WSGI utility library (Flask dependency)
+itsdangerous==2.2.0               # Secure data serialization (Flask dependency)
+click==8.1.8                      # Command line interface creation toolkit
+blinker==1.9.0                    # Object-to-object and broadcast signaling
+
+# ------------------------------------------------------------------------------
+# AI/ML - LANGCHAIN ECOSYSTEM
+# ------------------------------------------------------------------------------
+langchain==0.3.27                 # Main LangChain framework
+langchain-core==0.3.76            # Core LangChain functionality
+langchain-community==0.3.29       # Community-contributed LangChain components
+langchain-groq==0.3.8             # Groq integration for LangChain
+langchain-openai==0.3.33          # OpenAI integration for LangChain
+langchain-text-splitters==0.3.11  # Text splitting utilities
+langsmith==0.4.30                 # LangChain monitoring and debugging
+
+# ------------------------------------------------------------------------------
+# AI/ML - MODEL PROVIDERS & APIs
+# ------------------------------------------------------------------------------
+groq==0.31.1                      # Groq API client
+openai==1.109.1                   # OpenAI API client
+tiktoken==0.11.0                  # OpenAI's tokenizer library
+
+# ------------------------------------------------------------------------------
+# AI/ML - EMBEDDINGS & TRANSFORMERS
+# ------------------------------------------------------------------------------
+sentence-transformers==5.1.1      # Sentence embeddings library
+transformers==4.56.2              # HuggingFace transformers
+tokenizers==0.22.1                # Fast tokenizers for transformers
+huggingface-hub==0.35.1           # HuggingFace model hub client
+safetensors==0.6.2                # Safe tensor serialization format
+
+# ------------------------------------------------------------------------------
+# AI/ML - DEEP LEARNING FRAMEWORK
+# ------------------------------------------------------------------------------
+torch==2.8.0                      # PyTorch deep learning framework
+sympy==1.14.0                     # Symbolic mathematics (PyTorch dependency)
+networkx==3.2.1                   # Graph algorithms (PyTorch dependency)
+mpmath==1.3.0                     # Multiple-precision arithmetic
+
+# ------------------------------------------------------------------------------
+# DATA SCIENCE & ANALYSIS
+# ------------------------------------------------------------------------------
+pandas==2.3.2                     # Data manipulation and analysis
+numpy==2.0.2                      # Numerical computing
+scipy==1.13.1                     # Scientific computing
+scikit-learn==1.6.1               # Machine learning library
+matplotlib==3.9.4                 # Plotting library
+seaborn==0.13.2                   # Statistical data visualization
+plotly==6.3.0                     # Interactive plotting
+
+# Supporting libraries for data science
+matplotlib-inline==0.1.7          # Inline matplotlib backend for Jupyter
+contourpy==1.3.0                  # Contour plotting (matplotlib dependency)
+cycler==0.12.1                    # Composable style cycles (matplotlib dependency)
+fonttools==4.60.0                 # Font tools (matplotlib dependency)
+kiwisolver==1.4.7                 # Constraint solver (matplotlib dependency)
+pyparsing==3.2.5                  # Parsing library (matplotlib dependency)
+pillow==11.3.0                    # Image processing library
+joblib==1.5.2                     # Parallel computing (scikit-learn dependency)
+threadpoolctl==3.6.0              # Thread pool control (scikit-learn dependency)
+narwhals==2.5.0                   # DataFrame API compatibility layer
+
+# ------------------------------------------------------------------------------
+# JUPYTER ECOSYSTEM
+# ------------------------------------------------------------------------------
+jupyter==1.1.1                    # Jupyter metapackage
+jupyterlab==4.4.7                 # JupyterLab interface
+notebook==7.4.5                   # Classic Jupyter Notebook
+ipykernel==6.30.1                 # IPython kernel for Jupyter
+ipython==8.18.1                   # Interactive Python shell
+ipywidgets==8.1.7                 # Interactive widgets for Jupyter
+
+# Jupyter core components
+jupyter_client==8.6.3             # Jupyter protocol client APIs
+jupyter_core==5.8.1               # Core Jupyter functionality
+jupyter_server==2.17.0            # Jupyter server
+jupyter_server_terminals==0.5.3   # Terminal support for Jupyter server
+jupyterlab_server==2.27.3         # JupyterLab server
+jupyter-console==6.6.3            # Terminal-based console interface
+jupyter-events==0.12.0            # Event system for Jupyter
+jupyter-lsp==2.3.0                # Language server protocol integration
+
+# Jupyter rendering and UI
+jupyterlab_pygments==0.3.0        # Pygments syntax highlighting for JupyterLab
+jupyterlab_widgets==3.0.15        # Widget support for JupyterLab
+widgetsnbextension==4.0.14        # Widget extension for classic notebook
+notebook_shim==0.2.4              # Compatibility layer for notebook servers
+
+# Jupyter notebook processing
+nbclient==0.10.2                  # Client for executing notebooks
+nbconvert==7.16.6                 # Convert notebooks to other formats
+nbformat==5.10.4                  # Notebook format specification
+mistune==3.1.4                    # Markdown parser (nbconvert dependency)
+pandocfilters==1.5.1              # Pandoc filters (nbconvert dependency)
+bleach==6.2.0                     # HTML sanitization (nbconvert dependency)
+defusedxml==0.7.1                 # XML parsing security (nbconvert dependency)
+tinycss2==1.4.0                   # CSS parser (nbconvert dependency)
+webencodings==0.5.1               # Character encoding detection
+
+# ------------------------------------------------------------------------------
+# ENVIRONMENT & CONFIGURATION
+# ------------------------------------------------------------------------------
+python-dotenv==1.1.1              # Load environment variables from .env files
+
+# ------------------------------------------------------------------------------
+# UTILITIES & HELPERS
+# ------------------------------------------------------------------------------
+# Date/Time utilities
+python-dateutil==2.9.0.post0     # Date/time extensions
+pytz==2025.2                      # Timezone definitions
+tzdata==2025.2                    # Timezone data
+arrow==1.3.0                      # Better date/time handling
+types-python-dateutil==2.9.0.20250822  # Type hints for python-dateutil
+
+# Text processing
+beautifulsoup4==4.13.5            # HTML/XML parsing
+soupsieve==2.8                    # CSS selector library (BeautifulSoup dependency)
+regex==2025.9.18                  # Advanced regular expressions
+lark==1.3.0                       # Parsing toolkit
+
+# Data serialization
+PyYAML==6.0.2                     # YAML parser and emitter
+orjson==3.11.3                    # Fast JSON library
+dataclasses-json==0.6.7           # JSON serialization for dataclasses
+marshmallow==3.26.1               # Object serialization/deserialization
+
+# File operations
+filelock==3.19.1                  # Platform-independent file locking
+fsspec==2025.9.0                  # Unified interface for filesystem operations
+hf-xet==1.1.10                    # Git-like versioning for HuggingFace
+
+# Progress and logging
+tqdm==4.67.1                      # Progress bars
+python-json-logger==3.3.0         # JSON logging formatter
+
+# Type checking and validation
+pydantic==2.11.9                  # Data validation using Python type hints
+pydantic-core==2.33.2             # Core validation logic for Pydantic
+pydantic-settings==2.11.0         # Settings management with Pydantic
+typing_extensions==4.15.0         # Backported and experimental type hints
+typing-inspect==0.9.0             # Runtime inspection of typing module
+typing-inspection==0.4.1          # Runtime type inspection utilities
+mypy_extensions==1.1.0            # Extensions for mypy type checker
+
+# ------------------------------------------------------------------------------
+# SYSTEM & LOW-LEVEL
+# ------------------------------------------------------------------------------
+# Process and system utilities
+psutil==7.1.0                     # System and process utilities
+platformdirs==4.4.0               # Platform-specific directories
+distro==1.9.0                     # Linux distribution information
+
+# Terminal and console
+pexpect==4.9.0                    # Spawn and control child applications
+ptyprocess==0.7.0                 # Launch child processes in a pseudo-terminal
+prompt_toolkit==3.0.52            # Building interactive command line applications
+wcwidth==0.2.14                   # Measure display width of unicode strings
+
+# Memory and execution
+stack-data==0.6.3                 # Extract data from stack frames
+executing==2.2.1                  # Get currently executing AST node
+pure_eval==0.2.3                  # Safely evaluate expressions
+
+# ------------------------------------------------------------------------------
+# NETWORKING & HTTP
+# ------------------------------------------------------------------------------
+# HTTP clients
+requests==2.32.5                  # HTTP library
+requests-toolbelt==1.0.0          # Utility collection for requests
+httpx==0.28.1                     # Modern HTTP client
+httpcore==1.0.9                   # HTTP core functionality
+httpx-sse==0.4.1                  # Server-sent events for httpx
+h11==0.16.0                       # HTTP/1.1 protocol implementation
+
+# Async HTTP
+aiohttp==3.12.15                  # Async HTTP client/server
+aiosignal==1.4.0                  # Async signal handling
+async-timeout==4.0.3              # Timeout handling for async
+aiohappyeyeballs==2.6.1          # Fast DNS resolver
+
+# URL and network utilities
+urllib3==2.5.0                    # HTTP library with thread-safe connection pooling
+idna==3.10                        # Internationalized domain names
+charset-normalizer==3.4.3         # Character encoding detection
+certifi==2025.8.3                 # Certificate bundle
+sniffio==1.3.1                    # Detect async library in use
+anyio==4.11.0                     # Async abstraction layer
+
+# Multidict for async
+multidict==6.6.4                  # Multidict implementation
+frozenlist==1.7.0                 # Frozen list implementation
+yarl==1.20.1                      # URL parsing library
+propcache==0.3.2                  # Property caching
+
+# WebSocket support
+websocket-client==1.8.0           # WebSocket client library
+
+# ------------------------------------------------------------------------------
+# SECURITY & CRYPTOGRAPHY
+# ------------------------------------------------------------------------------
+cffi==2.23                        # C Foreign Function Interface
+pycparser==2.23                   # C parser (cffi dependency)
+argon2-cffi==25.1.0               # Argon2 password hashing
+argon2-cffi-bindings==25.1.0      # Low-level Argon2 bindings
+
+# ------------------------------------------------------------------------------
+# DEVELOPMENT & DEBUGGING
+# ------------------------------------------------------------------------------
+debugpy==1.8.17                   # Python debugger for VS Code
+jedi==0.19.2                      # Code completion and static analysis
+parso==0.8.5                      # Parser for Python (jedi dependency)
+decorator==5.2.1                  # Decorator utilities
+asttokens==3.0.0                  # Token-based ast annotations
+
+# IPython dependencies
+traitlets==5.14.3                 # Configuration system for applications
+matplotlib-inline==0.1.7          # Matplotlib backend for IPython
+
+# ------------------------------------------------------------------------------
+# DATA VALIDATION & SCHEMAS
+# ------------------------------------------------------------------------------
+jsonschema==4.25.1                # JSON schema validation
+jsonschema-specifications==2025.9.1  # JSON schema meta-schemas
+referencing==0.36.2               # JSON reference resolution
+rpds-py==0.27.1                   # Python data structures (jsonschema dependency)
+attrs==25.3.0                     # Classes without boilerplate
+
+# URI and format validation
+rfc3339-validator==0.1.4          # RFC3339 datetime validation
+rfc3986-validator==0.1.1          # RFC3986 URI validation
+rfc3987-syntax==1.1.0             # RFC3987 IRI syntax validation
+uri-template==1.3.0               # URI template parsing
+fqdn==1.5.1                       # FQDN validation
+isoduration==20.11.0              # ISO 8601 duration parsing
+webcolors==24.11.1                # Color name/value conversion
+
+# JSON manipulation
+jsonpatch==1.33                   # JSON patch implementation
+jsonpointer==3.0.0                # JSON pointer implementation
+json5==0.12.1                     # JSON5 parser
+
+# ------------------------------------------------------------------------------
+# CONCURRENCY & ASYNC
+# ------------------------------------------------------------------------------
+async-lru==2.0.5                  # LRU cache for async functions
+nest-asyncio==1.6.0               # Nested event loop support
+exceptiongroup==1.3.0             # Exception group handling
+
+# ------------------------------------------------------------------------------
+# COMPRESSION & SERIALIZATION
+# ------------------------------------------------------------------------------
+zstandard==0.25.0                 # Zstandard compression
+
+# ------------------------------------------------------------------------------
+# DATABASE & STORAGE
+# ------------------------------------------------------------------------------
+SQLAlchemy==2.0.43                # SQL toolkit and ORM
+
+# ------------------------------------------------------------------------------
+# MONITORING & OBSERVABILITY
+# ------------------------------------------------------------------------------
+prometheus_client==0.23.1         # Prometheus monitoring client
+tenacity==9.1.2                   # Retry library
+
+# ------------------------------------------------------------------------------
+# JUPYTER SERVER & COMMUNICATION
+# ------------------------------------------------------------------------------
+tornado==6.5.2                    # Web framework and asynchronous networking
+pyzmq==27.1.0                     # Python bindings for ZeroMQ
+terminado==0.18.1                 # Terminals served over WebSocket
+Send2Trash==1.8.3                 # Send files to trash
+
+# Communication protocols
+comm==0.2.3                       # Communication primitives
+fastjsonschema==2.21.2            # Fast JSON schema validation
+
+# ------------------------------------------------------------------------------
+# UTILITY LIBRARIES
+# ------------------------------------------------------------------------------
+packaging==25.0                   # Core utilities for Python packages
+six==1.17.0                       # Python 2 and 3 compatibility utilities
+overrides==7.7.0                  # Method override decorator
+tomli==2.2.1                      # TOML parser
+jitter==0.11.0                    # Add jitter to retry logic
+babel==2.17.0                     # Internationalization utilities
+Pygments==2.19.2                  # Syntax highlighter
+MarkupSafe==3.0.2                 # HTML markup safety
+Jinja2==3.1.6                     # Template engine
+appnope==0.1.4                    # Disable App Nap on macOS
+importlib_metadata==8.7.0         # Access package metadata
+importlib_resources==6.5.2        # Resource management
+zipp==3.23.0                      # Pathlib-compatible object wrapper

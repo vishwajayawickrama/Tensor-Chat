@@ -1,1 +1,322 @@
+# ==============================================================================
+# TENSOR-CHAT PROJECT .gitignore
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# ENVIRONMENT & SECRETS
+# ------------------------------------------------------------------------------
 .env
+.env.local
+.env.*.local
+.environment
+*.env
+config.json
+secrets.json
+
+# API Keys and sensitive data
+groq_api_key.txt
+openai_api_key.txt
+api_keys/
+credentials/
+
+# ------------------------------------------------------------------------------
+# PYTHON ENVIRONMENTS
+# ------------------------------------------------------------------------------
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Conda environments
+.conda/
+conda-meta/
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# ------------------------------------------------------------------------------
+# PYTHON CACHE & COMPILED FILES
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.manifest
+*.spec
+.cache/
+.pytest_cache/
+
+# Cython
+*.c
+*.html
+
+# ------------------------------------------------------------------------------
+# AI/ML & DATA SCIENCE
+# ------------------------------------------------------------------------------
+# Model files and weights
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.model
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.pb
+*.tflite
+
+# Datasets and data files
+data/
+datasets/
+*.csv
+*.json
+*.jsonl
+*.parquet
+*.feather
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.sqlite3
+
+# ML experiment tracking
+mlruns/
+.mlflow/
+wandb/
+tensorboard_logs/
+lightning_logs/
+
+# HuggingFace cache
+.cache/huggingface/
+transformers_cache/
+sentence_transformers_cache/
+
+# Embeddings cache
+embeddings_cache/
+vector_store/
+faiss_index/
+*.index
+
+# ------------------------------------------------------------------------------
+# JUPYTER NOTEBOOKS
+# ------------------------------------------------------------------------------
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+*.ipynb_checkpoints
+
+# Jupyter notebook outputs (optional - uncomment to ignore all outputs)
+# *.ipynb
+
+# JupyterLab settings
+.jupyter/
+.ipython/
+
+# ------------------------------------------------------------------------------
+# FLASK & WEB APPLICATION
+# ------------------------------------------------------------------------------
+instance/
+.webassets-cache
+.flask_session
+
+# Session files
+flask_session/
+sessions/
+
+# Upload directories
+uploads/
+static/uploads/
+
+# ------------------------------------------------------------------------------
+# DATABASES
+# ------------------------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+database.db
+app.db
+instance/*.db
+
+# ------------------------------------------------------------------------------
+# LOGS
+# ------------------------------------------------------------------------------
+*.log
+logs/
+log/
+*.out
+*.err
+
+# Application logs
+app.log
+error.log
+access.log
+debug.log
+
+# ------------------------------------------------------------------------------
+# OPERATING SYSTEM
+# ------------------------------------------------------------------------------
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ------------------------------------------------------------------------------
+# IDE & EDITORS
+# ------------------------------------------------------------------------------
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ------------------------------------------------------------------------------
+# DEVELOPMENT & BUILD
+# ------------------------------------------------------------------------------
+# Node.js (for frontend if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build directories
+build/
+dist/
+target/
+out/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# Testing
+.pytest_cache/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# ------------------------------------------------------------------------------
+# TEMPORARY & CACHE FILES
+# ------------------------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Cache directories
+.cache/
+cache/
+tmp/
+temp/
+
+# ------------------------------------------------------------------------------
+# DOCKER (if using containerization)
+# ------------------------------------------------------------------------------
+Dockerfile.dev
+docker-compose.override.yml
+.dockerignore
+
+# ------------------------------------------------------------------------------
+# DOCUMENTATION BUILD
+# ------------------------------------------------------------------------------
+docs/_build/
+docs/build/
+site/
+
+# ------------------------------------------------------------------------------
+# VERSION CONTROL
+# ------------------------------------------------------------------------------
+.git/
+.gitattributes
+*.orig
+*.rej
+
+# ------------------------------------------------------------------------------
+# PROJECT SPECIFIC
+# ------------------------------------------------------------------------------
+# Session chain data
+session_data/
+chat_history/
+conversation_logs/
+
+# Frontend build (if applicable)
+UI/dist/
+UI/build/
+UI/node_modules/
+
+# Model downloads
+models/
+pretrained/
+checkpoints/
