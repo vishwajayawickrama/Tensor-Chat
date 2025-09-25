@@ -42,7 +42,6 @@ def upload_pdf():
         else:
             session_id = session.get('session_id')
 
-
         # Check if file was uploaded
         if 'pdf' not in request.files:
             return jsonify({'error': 'No file uploaded'}), 400
