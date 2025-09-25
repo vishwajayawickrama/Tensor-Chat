@@ -1,12 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Send, Paperclip, Mic, MoreHorizontal, HelpCircle, Sparkles } from "lucide-react";
+import { Send, Paperclip, Mic, MoreHorizontal, HelpCircle, Sparkles, Upload, X, FileText, CheckCircle } from "lucide-react";
 
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showIntegrations, setShowIntegrations] = useState(false);
+  const [uploadedPdf, setUploadedPdf] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [dragOver, setDragOver] = useState(false);
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
   const API_BASE = 'http://localhost:5001';
 
   const integrations = [
@@ -24,6 +28,120 @@ function App() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    // Check if there's already a PDF loaded in the session
+    const checkPdfStatus = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/pdf-status`, {
+          credentials: 'include'
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.has_pdf) {
+            // Set a placeholder since we don't have the original filename
+            setUploadedPdf({
+              name: 'Previously uploaded PDF',
+              size: 0,
+              uploadedAt: new Date().toISOString()
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error checking PDF status:', error);
+      }
+    };
+
+    checkPdfStatus();
+  }, []);
+
+  const uploadPdf = async (file) => {
+    if (!file || file.type !== 'application/pdf') {
+      alert('Please select a valid PDF file');
+      return;
+    }
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('pdf', file);
+
+    try {
+      const response = await fetch(`${API_BASE}/upload-pdf`, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUploadedPdf({
+          name: file.name,
+          size: file.size,
+          uploadedAt: new Date().toISOString()
+        });
+        
+        // Add system message about PDF upload
+        const systemMsg = {
+          id: Date.now(),
+          sender: 'system',
+          text: `PDF "${file.name}" has been uploaded successfully! You can now ask questions about this document.`,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, systemMsg]);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Failed to upload PDF. Please try again.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) uploadPdf(file);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) uploadPdf(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
+  const removePdf = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/remove-pdf`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+
+      if (response.ok) {
+        setUploadedPdf(null);
+        const systemMsg = {
+          id: Date.now(),
+          sender: 'system',
+          text: 'PDF has been removed. Upload a new document to continue asking questions about documents.',
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+        setMessages(prev => [...prev, systemMsg]);
+      }
+    } catch (error) {
+      console.error('Error removing PDF:', error);
+    }
+  };
 
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -121,6 +239,79 @@ function App() {
                 recommendations. Let's get started!
               </div>
 
+              {/* PDF Upload Area */}
+              <div className="max-w-md mx-auto mb-6 sm:mb-8 px-4">
+                <div 
+                  className={`bg-black/20 backdrop-blur-xl border-2 border-dashed ${
+                    dragOver ? 'border-blue-400/60' : 'border-white/30'
+                  } rounded-2xl shadow-lg isolate p-6 sm:p-8 text-center relative transition-all duration-300 hover:border-white/50`}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                >
+                  {/* Shimmer overlay */}
+                  <div className="absolute inset-0 rounded-2xl opacity-30 bg-gradient-to-br from-transparent via-white/5 to-transparent pointer-events-none"></div>
+                  
+                  <div className="relative z-10">
+                    {!uploadedPdf ? (
+                      <>
+                        <Upload className="w-8 h-8 text-white/60 mx-auto mb-3" />
+                        <h3 className="text-white font-medium mb-2">Upload PDF Document</h3>
+                        <p className="text-white/60 text-sm mb-4">
+                          Drag and drop your PDF here or click to browse
+                        </p>
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={isUploading}
+                          className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isUploading ? 'Uploading...' : 'Choose PDF File'}
+                        </button>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".pdf"
+                          onChange={handleFileSelect}
+                          className="hidden"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center justify-center mb-3">
+                          <CheckCircle className="w-6 h-6 text-green-400 mr-2" />
+                          <FileText className="w-6 h-6 text-white/60" />
+                        </div>
+                        <h3 className="text-white font-medium mb-2">PDF Loaded</h3>
+                        <p className="text-white/60 text-sm mb-4">
+                          {uploadedPdf.name}
+                        </p>
+                        <div className="flex space-x-2 justify-center">
+                          <button
+                            onClick={() => fileInputRef.current?.click()}
+                            className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white px-3 py-2 rounded-lg transition-all duration-200 text-sm"
+                          >
+                            Replace
+                          </button>
+                          <button
+                            onClick={removePdf}
+                            className="bg-red-500/20 hover:bg-red-500/30 backdrop-blur-sm border border-red-400/30 text-red-300 px-3 py-2 rounded-lg transition-all duration-200 text-sm"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".pdf"
+                          onChange={handleFileSelect}
+                          className="hidden"
+                        />
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               {/* Integrations Panel */}
               {showIntegrations && (
                 <div className="bg-black/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-lg isolate p-4 sm:p-6 mb-6 sm:mb-8 text-left max-w-md mx-auto relative">
@@ -158,45 +349,79 @@ function App() {
           /* Messages */
           <div className="flex-1 overflow-y-auto p-4 sm:p-8">
             <div className="w-full max-w-4xl mx-auto space-y-4 sm:space-y-6">
+              {/* PDF Status Bar */}
+              {uploadedPdf && (
+                <div className="bg-black/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-lg isolate p-3 sm:p-4 relative">
+                  <div className="absolute inset-0 rounded-2xl opacity-30 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none"></div>
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex items-center space-x-3">
+                      <FileText className="w-5 h-5 text-green-400" />
+                      <div>
+                        <div className="text-white text-sm font-medium">PDF Loaded</div>
+                        <div className="text-white/60 text-xs">{uploadedPdf.name}</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={removePdf}
+                      className="p-1 text-white/60 hover:text-red-400 hover:bg-red-500/20 rounded-lg transition-all duration-200"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+              
               {messages.map((message, index) => (
                 <div
                   key={message.id}
                   className={`flex items-start space-x-2 sm:space-x-3 ${
                     message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                  }`}
+                  } ${message.sender === 'system' ? 'justify-center' : ''}`}
                 >
-                  {/* Avatar */}
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-black/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-lg isolate flex items-center justify-center flex-shrink-0 relative">
-                    {message.sender === 'user' ? (
-                      <div className="w-4 h-4 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                        T
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-3 gap-0.5 w-3 h-3 sm:w-4 sm:h-4">
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/100 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
-                        <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
-                      </div>
-                    )}
-                    {/* Shimmer overlay */}
-                    <div className="absolute inset-0 rounded-2xl opacity-30 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none"></div>
-                  </div>
+                  {/* Avatar - only show for user and bot messages */}
+                  {message.sender !== 'system' && (
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-black/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-lg isolate flex items-center justify-center flex-shrink-0 relative">
+                      {message.sender === 'user' ? (
+                        <div className="w-4 h-4 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                          T
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-3 gap-0.5 w-3 h-3 sm:w-4 sm:h-4">
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/100 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/70 rounded-full"></div>
+                          <div className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-white/90 rounded-full"></div>
+                        </div>
+                      )}
+                      {/* Shimmer overlay */}
+                      <div className="absolute inset-0 rounded-2xl opacity-30 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none"></div>
+                    </div>
+                  )}
 
                   {/* Message Bubble */}
-                  <div className={`flex-1 max-w-[calc(100%-3rem)] sm:max-w-xs md:max-w-md lg:max-w-lg ${
-                    message.sender === 'user' ? 'ml-auto' : 'mr-auto'
+                  <div className={`${message.sender === 'system' ? 'max-w-md' : 'flex-1 max-w-[calc(100%-3rem)] sm:max-w-xs md:max-w-md lg:max-w-lg'} ${
+                    message.sender === 'user' ? 'ml-auto' : message.sender === 'system' ? 'mx-auto' : 'mr-auto'
                   }`}>
-                    <div className="text-xs text-gray-400 mb-1 px-2">
-                      {message.sender === 'user' ? 'Tommy Radison' : 'Tensor Chat'} • {message.time}
-                    </div>
-                    <div className="bg-black/20 backdrop-blur-xl border border-white/30 rounded-2xl shadow-lg isolate px-3 py-2 sm:px-4 sm:py-3 relative">
-                      <p className="text-sm text-white leading-relaxed relative z-10 break-words">{message.text}</p>
+                    {message.sender !== 'system' && (
+                      <div className="text-xs text-gray-400 mb-1 px-2">
+                        {message.sender === 'user' ? 'Tommy Radison' : 'Tensor Chat'} • {message.time}
+                      </div>
+                    )}
+                    <div className={`${
+                      message.sender === 'system' 
+                        ? 'bg-green-500/20 border-green-400/30' 
+                        : 'bg-black/20 border-white/30'
+                    } backdrop-blur-xl border rounded-2xl shadow-lg isolate px-3 py-2 sm:px-4 sm:py-3 relative`}>
+                      <p className={`text-sm ${
+                        message.sender === 'system' ? 'text-green-300 text-center' : 'text-white'
+                      } leading-relaxed relative z-10 break-words`}>
+                        {message.text}
+                      </p>
                       {/* Shimmer overlay */}
                       <div className="absolute inset-0 rounded-2xl opacity-20 bg-gradient-to-br from-transparent via-white/5 to-transparent pointer-events-none"></div>
                     </div>
@@ -250,31 +475,28 @@ function App() {
               {/* Shimmer overlay */}
               <div className="absolute inset-0 rounded-2xl opacity-30 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none"></div>
               
-              {/* Commented out attachment buttons */}
-              {/*
+              {/* Attachment button */}
               <button 
                 className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 relative z-10"
-                onClick={() => setShowIntegrations(!showIntegrations)}
+                onClick={() => fileInputRef.current?.click()}
+                title="Upload PDF"
               >
                 <Paperclip className="w-5 h-5" />
               </button>
-              <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 relative z-10">
-                <div className="w-5 h-5 border-2 border-current rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-current rounded-full"></div>
-                </div>
-              </button>
-              <button className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 relative z-10">
-                <div className="w-5 h-5 relative">
-                  <div className="absolute inset-0 border-2 border-current rounded"></div>
-                  <div className="absolute top-1 left-1 right-1 bottom-1 border border-current rounded-sm"></div>
-                </div>
-              </button>
-              */}
+              
+              {/* Hidden file input for quick access */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
               
               <input
                 type="text"
                 className="flex-1 bg-transparent text-white placeholder-white/40 outline-none px-3 py-2 sm:py-3 rounded-xl relative z-10 text-sm sm:text-base"
-                placeholder="Ask me anything..."
+                placeholder={uploadedPdf ? "Ask about your PDF..." : "Ask me anything..."}
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
