@@ -5,7 +5,6 @@ from flask_cors import CORS
 import uuid
 from dotenv import load_dotenv
 import datetime
-import uuid
 import os
 from werkzeug.utils import secure_filename
 
