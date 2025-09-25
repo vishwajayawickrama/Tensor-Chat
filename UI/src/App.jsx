@@ -133,7 +133,7 @@ function App() {
         const systemMsg = {
           id: Date.now(),
           sender: 'system',
-          text: 'PDF has been removed. Upload a new document to continue asking questions about PDFs.',
+          text: 'PDF has been removed. Upload a new document to continue asking questions about documents.',
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
         setMessages(prev => [...prev, systemMsg]);
