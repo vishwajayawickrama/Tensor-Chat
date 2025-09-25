@@ -1,7 +1,5 @@
 from langchain_groq import ChatGroq
 from langchain.memory import ConversationBufferWindowMemory
-from langchain.schema import HumanMessage, AIMessage
-from langchain.callbacks.base import BaseCallbackHandler
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import ConversationChain
 from dotenv import load_dotenv
@@ -9,7 +7,7 @@ import os
 
 load_dotenv()
 
-class Session_Chain:
+class SessionChain:
     def __init__(self, session_id):
         self.session_id = session_id
         self.chain = self.create_chain()

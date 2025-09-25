@@ -12,7 +12,7 @@
 *.env
 config.json
 secrets.json
-
+.DS_Store
 # API Keys and sensitive data
 groq_api_key.txt
 openai_api_key.txt

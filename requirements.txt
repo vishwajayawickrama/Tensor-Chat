@@ -19,6 +19,7 @@ langchain==0.3.27                 # Main LangChain framework
 langchain-core==0.3.76            # Core LangChain functionality
 langchain-community==0.3.29       # Community-contributed LangChain components
 langchain-groq==0.3.8             # Groq integration for LangChain
+langchain-huggingface==0.3.29     # HuggingFace integration for LangChain
 langchain-openai==0.3.33          # OpenAI integration for LangChain
 langchain-text-splitters==0.3.11  # Text splitting utilities
 langsmith==0.4.30                 # LangChain monitoring and debugging
@@ -39,7 +40,7 @@ tokenizers==0.22.1                # Fast tokenizers for transformers
 huggingface-hub==0.35.1           # HuggingFace model hub client
 safetensors==0.6.2                # Safe tensor serialization format
 docarray                          # Document array for embeddings
-pdfminer.six==20221105            # PDF parsing library
+pdfminer.six==20240706            # PDF parsing library (updated version)
 PyPDF2                            # Alternative PDF processing library
 pypdf                             # Modern PDF library (PyPDF2 successor)
 
