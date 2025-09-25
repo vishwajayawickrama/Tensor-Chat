@@ -18,8 +18,12 @@
 - **Hybrid Chat Mode** - Seamlessly switches between general chat and document Q&A
 
 > **Version 1 (v1)** – a Minimum Viable Product (MVP) for the core chat system.
+> - Streaming responses
+> - Persistent chat history
 
 > **Version 2 (v2)** – Added multi-user session support, avatar icons and typing indicators.
+> - Multi-user session support
+> - Avatar icons and typing indicators
 
 > **Version 3 (v3)** (Active)
 > - Document Q&A with PDF upload functionality
@@ -30,10 +34,14 @@
 > - Enhanced UI with drag-and-drop PDF upload and visual indicators
 
 > **Future Roadmap**
-> - Streaming responses
-> - Persistent chat history
-> - Multiple document support
-> - Advanced document types (Word, Excel, etc.)
+> - **WebSocket Integration** - Real-time bidirectional communication for instant messaging
+> - **Language Translation Chains** - Multi-language support with automatic translation
+> - **Streaming Responses** - Real-time token streaming for faster user experience
+> - **Persistent Chat History** - Database storage for conversation continuity
+> - **Multiple Document Support** - Handle multiple PDFs simultaneously
+> - **Advanced Document Types** - Support for Word, Excel, PowerPoint, and more
+> - **Voice Integration** - Speech-to-text and text-to-speech capabilities
+> - **Custom Model Support** - Integration with other LLM providers
 
 ---
 
