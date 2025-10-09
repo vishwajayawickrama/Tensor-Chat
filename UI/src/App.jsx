@@ -11,7 +11,7 @@ function App() {
   const [dragOver, setDragOver] = useState(false);
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
-  const API_BASE = 'http://localhost:5001';
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   const integrations = [
     { name: 'Visual Studio', description: 'Requires extension', status: 'Get', icon: '🔵' },
